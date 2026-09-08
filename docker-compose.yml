@@ -1,0 +1,77 @@
+# Orchestration du projet — complétée au fil des séances.
+# TP1 : catalogue + sa base démarrent tels quels.
+# TP4 : déclarez commandes + db-commandes sur le modèle du catalogue.
+# TP6 : dé-commentez rabbitmq puis notifications.
+# TP7 : dé-commentez paiement.  TP8 : déclarez auth + db-auth.
+
+services:
+
+  catalogue:
+    build: services/catalogue
+    environment:
+      DATABASE_URL: ${CATALOGUE_DATABASE_URL}
+      RABBITMQ_URL: ${RABBITMQ_URL}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db-catalogue:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: always
+
+  db-catalogue:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: catalogue
+    volumes:
+      - data-catalogue:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d catalogue"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ---- TP4 — À vous : commandes + db-commandes, sur le modèle ci-dessus ----
+  # (port conseillé : 8002:8000 ; base : COMMANDES_DATABASE_URL)
+
+  # ---- TP6 — dé-commentez : ----------------------------------------------
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"   # interface de gestion : http://localhost:15672 (guest/guest)
+  #   healthcheck:
+  #     test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 10
+  #
+  # notifications:
+  #   build: services/notifications
+  #   environment:
+  #     RABBITMQ_URL: ${RABBITMQ_URL}
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   restart: always
+
+  # ---- TP7 — dé-commentez : ----------------------------------------------
+  # paiement:
+  #   build: services/paiement
+  #   environment:
+  #     RABBITMQ_URL: ${RABBITMQ_URL}
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   restart: always
+
+  # ---- TP8 — À vous : auth + db-auth (port conseillé : 8004:8000) --------
+
+volumes:
+  data-catalogue:

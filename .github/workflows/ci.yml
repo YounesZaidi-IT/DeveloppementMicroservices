@@ -1,0 +1,24 @@
+# Pipeline d'intégration continue — squelette à compléter au TP9.
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # TODO (TP9) : ajoutez vos autres services à la matrice
+        service: [catalogue]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Installer le service et ses dépendances de test
+        run: pip install -e "./services/${{ matrix.service }}[test]"
+      - name: Lint
+        run: ruff check services/${{ matrix.service }}
+      - name: Tests
+        run: pytest services/${{ matrix.service }}
+      # TODO (TP9, pour aller plus loin) : un job "build" qui construit l'image Docker
