@@ -3,6 +3,11 @@
 Point de départ du projet fil rouge du module **Développement de Microservices en Python**
 (Master formation continue, Pr. LOUZAR Oumaima, 2026-2027).
 
+## Développeur
+
+**Younes Zaidi**
+Développeur — Projet Microservices en Python [12-09-2026]
+
 ## Démarrage rapide
 
 ```bash
