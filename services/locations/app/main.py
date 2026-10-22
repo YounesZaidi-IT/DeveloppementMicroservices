@@ -1,16 +1,16 @@
-"""Point d'entrée du service Catalogue — squelette fourni.
+"""Point d'entrée du service Locations — squelette fourni.
 
 Fonctionne dès le TP1 (route /health). Les routeurs que vous créerez au fil
 des TP sont branchés automatiquement s'ils existent (import défensif).
 """
 from fastapi import FastAPI
 
-app = FastAPI(title="Service Catalogue")
+app = FastAPI(title="Service Locations")
 
 
 @app.get("/health", tags=["monitoring"])
 async def health():
-    return {"status": "ok", "service": "catalogue"}
+    return {"status": "ok", "service": "locations"}
 
 
 # Le routeur métier (app/routes.py) est branché dès que vous le créez (TP2).

@@ -14,7 +14,7 @@ Développeur — Projet Microservices en Python
 ```bash
 cp .env.example .env
 docker compose up --build
-# puis ouvrir http://localhost:8000/docs  (service Catalogue)
+# puis ouvrir http://localhost:8000/docs  (service Vehicules)
 ```
 
 ## Structure
@@ -24,8 +24,8 @@ docker compose up --build
 ├── .github/workflows/    # pipeline CI (complété au TP9)
 ├── docker-compose.yml    # orchestration (complété au fil des TP)
 ├── services/
-│   ├── catalogue/        # service exemple : le plus complet, servez-vous-en de modèle
-│   ├── commandes/
+│   ├── vehicules/        # service exemple : le plus complet, servez-vous-en de modèle
+│   ├── locations/
 │   ├── auth/
 │   ├── paiement/         # simulateur de paiement (TP7)
 │   └── notifications/    # consommateur d'événements (TP6)
